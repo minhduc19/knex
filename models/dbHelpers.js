@@ -5,7 +5,9 @@ const db = knex(config.development);
 module.exports = {
 	add,
 	find,
-	findById
+	findById,
+	update,
+	addLesson
 }
 
 async function add(data) {
@@ -16,9 +18,22 @@ async function add(data) {
 }
 
 async function find() {
-	return await db('courses')
+	return await db('courses');
 }
 
 async function findById(id) {
 	return await db('courses').where({id:id}).first();
 } 
+
+async function update(id,data) {
+	return await db('courses').where({id:id}).update(data).then(() => {return findById(id)});
+	//return id;
+	//return "test";
+}
+
+async function addLesson(lesson, course_id) {
+	//return await db("lessons").where({ course_id }).insert(message, ["id"]);
+	const [id] = await db('lessons').where({ course_id }).insert(lesson);
+	return id;
+	//const id = await db('lesson').insert(lesson);
+}

@@ -4,10 +4,16 @@ module.exports = {
 
   development: {
     client: 'sqlite3',
+    userNullAsDefault: true,
     connection: {
       filename: './data/dev.sqlite3'
-    }
+    },
+    
   },
-  userNullAsDefault: true
 
+  pool: {
+    afterCreate: (conn, done) => {
+      conn.run("PRAGMA foreign_keys = ON", done);
+    },
+  },
 };

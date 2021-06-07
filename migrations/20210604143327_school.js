@@ -9,6 +9,7 @@ exports.up = function(knex) {
        table.increments('id');
        table.text('description', 255).notNullable();
        table.text('content', 255).notNullable();
+       
        table.integer('course_id')
        .unsigned()
        .references('id')
