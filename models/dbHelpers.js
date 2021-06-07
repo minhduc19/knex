@@ -7,7 +7,9 @@ module.exports = {
 	find,
 	findById,
 	update,
-	addLesson
+	addLesson,
+	findLessonById,
+	findCourseLessons
 }
 
 async function add(data) {
@@ -36,4 +38,13 @@ async function addLesson(lesson, course_id) {
 	const [id] = await db('lessons').where({ course_id }).insert(lesson);
 	return id;
 	//const id = await db('lesson').insert(lesson);
+}
+
+async function findLessonById(id) {
+	return await db('lessons').where({id:id}).first();
+}
+
+async function findCourseLessons(course_id) {
+	return await db('courses as c').join('lessons as l','c.id','=','l.course_id').
+	select('l.id as lessonID').where({"l.course_id":course_id});
 }

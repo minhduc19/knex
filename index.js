@@ -65,13 +65,6 @@ app.patch('/api/courses/:id',(req,res) => {
 	})
 })
 
-app.get('/api/now',(req,res)=>{
-	Courses.find()
-	.then(lessons => {res.status(200).json(lessons)})
-	.catch(err => {
-		res.status(500).json({message: 'cannot retrieve lessons'})
-	})
-})
 
 app.post('/api/courses/:id/addlesson',(req,res) => {
 	//res.status.json({data:"test"});
@@ -111,4 +104,37 @@ app.post('/api/courses/:id/addlesson',(req,res) => {
 	      res.status(500).json({ message: "Error finding lesson" });
 	    });
 
+})
+
+app.get('/api/lesson/:id',(req,res) => {
+	//res.send('Hello World')
+	const id = req.params.id;
+	//res.status(200).json(req.body);
+
+	Courses.findLessonById(id)
+	.then((message) => {
+		res.status(200).json(message)
+	})
+	.catch((error) => {
+		res.status(500).json({ message: "Error finding lesson" });
+
+	})
+})
+
+app.get("/api/:id/lessons", (req, res) => {
+  const { id } = req.params;
+  //res.send(id);
+
+  Courses.findCourseLessons(id)
+    .then((lessons) => {
+      res.status(200).json(lessons);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Error retrieving messages" });
+    });
+});
+
+app.get('/api/course/:courseid/lesson/:lessonid', (req,res) => {
+	const id = req.params;
+	res.json(id);
 })
